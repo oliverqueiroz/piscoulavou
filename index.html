@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 
@@ -10,173 +10,191 @@
 <style>
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
 
-background:#f3f5f8;
+    background:#f4f6f9;
 
-display:flex;
-justify-content:center;
-align-items:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-height:100vh;
+    min-height:100vh;
+
+    padding:20px;
 
 }
 
 .card{
 
-background:white;
+    background:white;
 
-width:100%;
-max-width:420px;
+    width:100%;
+    max-width:430px;
 
-padding:40px;
+    padding:40px;
 
-border-radius:18px;
+    border-radius:18px;
 
-box-shadow:0 10px 35px rgba(0,0,0,.08);
+    box-shadow:0 10px 40px rgba(0,0,0,.08);
 
 }
 
 .logo{
 
-font-size:30px;
-font-weight:bold;
-color:#0b5ed7;
+    text-align:center;
+    margin-bottom:25px;
 
-text-align:center;
+}
 
-margin-bottom:8px;
+.logo img{
+
+    width:170px;
+    max-width:100%;
+    height:auto;
+
+}
+
+h1{
+
+    text-align:center;
+
+    font-size:28px;
+
+    color:#1d1d1d;
+
+    margin-bottom:10px;
 
 }
 
 .sub{
 
-text-align:center;
-color:#666;
+    text-align:center;
 
-margin-bottom:35px;
+    color:#666;
 
-font-size:15px;
+    margin-bottom:35px;
+
+    font-size:15px;
+
+    line-height:22px;
 
 }
 
 label{
 
-display:block;
+    display:block;
 
-margin-bottom:8px;
+    margin-bottom:8px;
 
-font-weight:bold;
+    font-weight:bold;
 
-color:#444;
+    color:#444;
 
 }
 
 input{
 
-width:100%;
+    width:100%;
 
-padding:15px;
+    padding:15px;
 
-border:1px solid #d9d9d9;
+    margin-bottom:20px;
 
-border-radius:10px;
+    border:1px solid #d7d7d7;
 
-margin-bottom:22px;
+    border-radius:10px;
 
-font-size:16px;
+    font-size:16px;
 
-transition:.2s;
+    transition:.2s;
 
 }
 
 input:focus{
 
-outline:none;
+    outline:none;
 
-border-color:#0b5ed7;
+    border-color:#0b5ed7;
 
-box-shadow:0 0 0 3px rgba(13,110,253,.15);
+    box-shadow:0 0 0 3px rgba(13,110,253,.15);
 
 }
 
 button{
 
-width:100%;
+    width:100%;
 
-padding:16px;
+    padding:16px;
 
-background:#0b5ed7;
+    background:#0b5ed7;
 
-color:white;
+    color:white;
 
-font-size:16px;
+    border:none;
 
-font-weight:bold;
+    border-radius:10px;
 
-border:none;
+    font-size:16px;
 
-border-radius:10px;
+    font-weight:bold;
 
-cursor:pointer;
+    cursor:pointer;
 
-transition:.2s;
+    transition:.2s;
 
 }
 
 button:hover{
 
-background:#0954bf;
+    background:#0953c0;
 
 }
 
 button:disabled{
 
-opacity:.6;
+    opacity:.6;
 
-cursor:not-allowed;
+    cursor:not-allowed;
 
 }
 
 .msg{
 
-margin-top:20px;
+    margin-top:20px;
 
-text-align:center;
+    text-align:center;
 
-font-size:15px;
-
-font-weight:bold;
-
-}
-
-.erro{
-
-color:#d80027;
+    font-weight:bold;
 
 }
 
 .ok{
 
-color:#198754;
+    color:#198754;
+
+}
+
+.erro{
+
+    color:#d63333;
 
 }
 
 .footer{
 
-margin-top:30px;
+    margin-top:30px;
 
-font-size:12px;
+    text-align:center;
 
-color:#999;
+    color:#999;
 
-text-align:center;
+    font-size:12px;
 
 }
 
@@ -188,48 +206,48 @@ text-align:center;
 
 <div class="card">
 
-<div class="logo">
-IDENTIFICAÇÃO
-</div>
+    <div class="logo">
+        <img src="logo.png" alt="Logo">
+    </div>
 
-<div class="sub">
-Informe seus dados para continuar.
-</div>
+    <h1>Identificação</h1>
 
-<label>Nome completo</label>
+    <div class="sub">
+        Informe seus dados para continuar.
+    </div>
 
-<input
-id="nome"
-placeholder="Digite seu nome">
+    <label>Nome completo</label>
 
-<label>CPF</label>
+    <input
+    id="nome"
+    placeholder="Digite seu nome">
 
-<input
-id="cpf"
-maxlength="14"
-placeholder="000.000.000-00">
+    <label>CPF</label>
 
-<button id="btn">
-Continuar
-</button>
+    <input
+    id="cpf"
+    maxlength="14"
+    placeholder="000.000.000-00">
 
-<div id="msg" class="msg"></div>
+    <button id="btn">
+        Continuar
+    </button>
 
-<div class="footer">
+    <div id="msg" class="msg"></div>
 
-Seus dados são utilizados apenas para validação.
-
-</div>
+    <div class="footer">
+        Seus dados são utilizados apenas para validação.
+    </div>
 
 </div>
 
 <script>
 
-const webhook = "https://SEU-WEBHOOK-AQUI";
+const webhook="https://SEU-WEBHOOK-AQUI";
 
-const cpfInput = document.getElementById("cpf");
+const cpf=document.getElementById("cpf");
 
-cpfInput.addEventListener("input",function(){
+cpf.addEventListener("input",function(){
 
 let v=this.value.replace(/\D/g,'');
 
@@ -245,18 +263,16 @@ function validarCPF(cpf){
 
 cpf=cpf.replace(/\D/g,'');
 
-if(cpf.length!==11) return false;
+if(cpf.length!=11) return false;
 
-if(/^(\d)\1+$/.test(cpf))
-return false;
+if(/^(\d)\1+$/.test(cpf)) return false;
 
 let soma=0;
-let resto;
 
 for(let i=1;i<=9;i++)
 soma+=parseInt(cpf.substring(i-1,i))*(11-i);
 
-resto=(soma*10)%11;
+let resto=(soma*10)%11;
 
 if(resto==10||resto==11)
 resto=0;
@@ -348,7 +364,7 @@ catch{
 
 msg.classList.add("erro");
 
-msg.innerHTML="Não foi possível enviar.";
+msg.innerHTML="Erro ao enviar.";
 
 }
 
