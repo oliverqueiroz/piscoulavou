@@ -38,8 +38,8 @@ button:disabled{opacity:.6;cursor:not-allowed}
 </div>
 
 <script>
-const webhook="https://SEU-WEBHOOK-AQUI";
-const TEMPO_AUTORIZACAO=24*60*60*1000;
+const webhook="https://script.google.com/macros/s/AKfycbzQGzqY4Ni5TWd0sUmY3jb-hRH-zBDMkc-sSe1roP35F40_gJdW5R8-JBDLQANzBTM0kA/exec";
+const TEMPO_AUTORIZACAO=4*60*60*1000;
 
 const acesso=JSON.parse(localStorage.getItem("acessoPorta"));
 if(acesso && (Date.now()-acesso.data)<TEMPO_AUTORIZACAO){
