@@ -28,7 +28,9 @@ button:disabled{opacity:.6;cursor:not-allowed}
 <body>
 <div class="card">
 
-<div class="logo"><img src="logo.png" alt="Logo"></div>
+<div class="logo">
+<img src="logo.png" alt="Logo">
+</div>
 
 <h1>Identificação</h1>
 <div class="sub">Informe seus dados para continuar.</div>
@@ -48,16 +50,19 @@ button:disabled{opacity:.6;cursor:not-allowed}
 </div>
 
 <script>
+
+// 🔥 SUA URL DO GOOGLE APPS SCRIPT
 const webhook = "https://script.google.com/macros/s/AKfycbzQGzqY4Ni5TWd0sUmY3jb-hRH-zBDMkc-sSe1roP35F40_gJdW5R8-JBDLQANzBTM0kA/exec";
+
 const TEMPO_AUTORIZACAO = 4 * 60 * 60 * 1000;
 
-// redireciona se já liberado
+// 🔐 auto login
 const acesso = JSON.parse(localStorage.getItem("acessoPorta"));
 if (acesso && (Date.now() - acesso.data) < TEMPO_AUTORIZACAO) {
     window.location.href = "porta-liberada.html";
 }
 
-// máscara CPF
+// CPF mask
 const cpfInput = document.getElementById("cpf");
 cpfInput.addEventListener("input", function () {
     let v = this.value.replace(/\D/g,'');
@@ -115,29 +120,30 @@ document.getElementById("btn").onclick = async () => {
     btn.innerHTML = "Carregando...";
 
     try {
-        // 🔥 ENVIA PRO GOOGLE SHEETS
         await fetch(webhook, {
             method: "POST",
-            headers: {"Content-Type":"application/json"},
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({
                 nome: nome,
                 cpf: cpf.replace(/\D/g,'')
             })
         });
     } catch (e) {
-        console.log("Erro ao enviar log:", e);
+        console.log("Erro ao enviar:", e);
     }
 
-    // salva liberação local
+    // salva acesso local (4h)
     localStorage.setItem("acessoPorta", JSON.stringify({
         nome: nome,
         cpf: cpf.replace(/\D/g,''),
         data: Date.now()
     }));
 
-    // redireciona
     window.location.href = "porta-liberada.html";
 };
+
 </script>
 
 </body>
