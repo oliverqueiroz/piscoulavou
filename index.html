@@ -46,16 +46,22 @@ button:disabled{opacity:.6}
 
 <script>
 
-const webhook = "COLOQUE_SEU_WEBHOOK_AQUI";
+// 🔗 WEBHOOK CADASTRO (SEU GOOGLE SCRIPT)
+const webhookCadastro = "https://script.google.com/macros/s/AKfycbzQGzqY4Ni5TWd0sUmY3jb-hRH-zBDMkc-sSe1roP35F40_gJdW5R8-JBDLQANzBTM0kA/exec";
+
+// 🔗 WEBHOOK PORTA (AINDA NÃO USADO)
+const webhookPorta = null;
+
+// ⏱ 4 horas de acesso
 const TEMPO = 4 * 60 * 60 * 1000;
 
-// auto acesso
+// auto login
 const acesso = JSON.parse(localStorage.getItem("acessoPorta"));
 if (acesso && (Date.now() - acesso.data) < TEMPO) {
     window.location.href = "porta-liberada.html";
 }
 
-// máscara CPF
+// CPF mask
 cpf.addEventListener("input", function () {
     let v = this.value.replace(/\D/g,'');
     v = v.replace(/(\d{3})(\d)/,"$1.$2");
@@ -111,17 +117,32 @@ async function enviar(){
     btn.innerText = "Carregando...";
 
     try {
-        await fetch(webhook, {
+        await fetch(webhookCadastro, {
             method: "POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({ nome, cpf })
         });
 
+        // salva acesso local (4h)
         localStorage.setItem("acessoPorta", JSON.stringify({
             nome,
             cpf,
             data: Date.now()
         }));
+
+        // opcional: webhook da porta (ainda desligado)
+        if (webhookPorta) {
+            fetch(webhookPorta, {
+                method: "POST",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({
+                    nome,
+                    cpf,
+                    acesso: true,
+                    data: Date.now()
+                })
+            }).catch(()=>{});
+        }
 
         window.location.href = "porta-liberada.html";
 
