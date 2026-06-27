@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 
 body{
     margin:0;
-    font-family:Arial;
+    font-family:Arial, sans-serif;
     height:100vh;
     display:flex;
     justify-content:center;
@@ -39,6 +39,22 @@ h1{
 
 p{
     color:#666;
+    margin-bottom:30px;
+}
+
+button{
+    background:#009DFF;
+    color:white;
+    border:none;
+    padding:15px 25px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#0087db;
 }
 
 </style>
@@ -48,13 +64,39 @@ p{
 
 <div class="card">
 
-    <img src="logo.png">
+    <img src="logo.png" alt="Logo">
 
     <h1>Porta Liberada</h1>
 
     <p>Seu acesso foi validado com sucesso.</p>
 
+    <button onclick="encerrarSessao()">
+        Encerrar acesso
+    </button>
+
 </div>
+
+<script>
+
+const TEMPO_AUTORIZACAO = 24 * 60 * 60 * 1000;
+
+const acesso = JSON.parse(localStorage.getItem("acessoPorta"));
+
+if (!acesso) {
+    window.location.href = "index.html";
+}
+
+if ((Date.now() - acesso.data) > TEMPO_AUTORIZACAO) {
+    localStorage.removeItem("acessoPorta");
+    window.location.href = "index.html";
+}
+
+function encerrarSessao(){
+    localStorage.removeItem("acessoPorta");
+    window.location.href = "index.html";
+}
+
+</script>
 
 </body>
 </html>
