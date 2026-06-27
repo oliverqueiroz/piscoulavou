@@ -1,321 +1,114 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Identificação</title>
-
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
-
-body{
-
-    background:#f4f6f9;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    min-height:100vh;
-
-    padding:20px;
-
-}
-
-.card{
-
-    background:white;
-
-    width:100%;
-    max-width:430px;
-
-    padding:40px;
-
-    border-radius:18px;
-
-    box-shadow:0 10px 40px rgba(0,0,0,.08);
-
-}
-
-.logo{
-
-    text-align:center;
-    margin-bottom:25px;
-
-}
-
-.logo img{
-
-    width:170px;
-    max-width:100%;
-    height:auto;
-
-}
-
-h1{
-
-    text-align:center;
-
-    font-size:28px;
-
-    color:#1d1d1d;
-
-    margin-bottom:10px;
-
-}
-
-.sub{
-
-    text-align:center;
-
-    color:#666;
-
-    margin-bottom:35px;
-
-    font-size:15px;
-
-    line-height:22px;
-
-}
-
-label{
-
-    display:block;
-
-    margin-bottom:8px;
-
-    font-weight:bold;
-
-    color:#444;
-
-}
-
-input{
-
-    width:100%;
-
-    padding:15px;
-
-    margin-bottom:20px;
-
-    border:1px solid #d7d7d7;
-
-    border-radius:10px;
-
-    font-size:16px;
-
-    transition:.2s;
-
-}
-
-input:focus{
-
-    outline:none;
-
-    border-color:#009DFF;
-
-    box-shadow:0 0 0 3px rgba(0,157,255,.15);
-
-}
-
-button{
-
-    width:100%;
-
-    padding:16px;
-
-    background:#009DFF;
-
-    color:white;
-
-    border:none;
-
-    border-radius:10px;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-button:hover{
-
-    background:#0087db;
-
-}
-
-button:disabled{
-
-    opacity:.6;
-
-    cursor:not-allowed;
-
-}
-
-.msg{
-
-    margin-top:20px;
-
-    text-align:center;
-
-    font-weight:bold;
-
-}
-
-.erro{
-
-    color:#d63333;
-
-}
-
-.footer{
-
-    margin-top:30px;
-
-    text-align:center;
-
-    color:#999;
-
-    font-size:12px;
-
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{background:#f4f6f9;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.card{background:#fff;width:100%;max-width:430px;padding:40px;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.08)}
+.logo{text-align:center;margin-bottom:25px}
+.logo img{width:170px;max-width:100%;height:auto}
+h1{text-align:center;font-size:28px;color:#1d1d1d;margin-bottom:10px}
+.sub{text-align:center;color:#666;margin-bottom:35px;font-size:15px;line-height:22px}
+label{display:block;margin-bottom:8px;font-weight:bold;color:#444}
+input{width:100%;padding:15px;margin-bottom:20px;border:1px solid #d7d7d7;border-radius:10px;font-size:16px}
+input:focus{outline:none;border-color:#009DFF;box-shadow:0 0 0 3px rgba(0,157,255,.15)}
+button{width:100%;padding:16px;background:#009DFF;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer}
+button:hover{background:#0087db}
+button:disabled{opacity:.6;cursor:not-allowed}
+.msg{margin-top:20px;text-align:center;font-weight:bold}
+.erro{color:#d63333}
+.footer{margin-top:30px;text-align:center;color:#999;font-size:12px}
 </style>
-
 </head>
-
 <body>
-
 <div class="card">
-
-    <div class="logo">
-        <img src="logo.png" alt="Logo">
-    </div>
-
-    <h1>Identificação</h1>
-
-    <div class="sub">
-        Informe seus dados para continuar.
-    </div>
-
-    <label>Nome</label>
-    <input id="nome" placeholder="Digite seu nome">
-
-    <label>CPF</label>
-    <input id="cpf" maxlength="14" placeholder="000.000.000-00">
-
-    <button id="btn">Continuar</button>
-
-    <div id="msg" class="msg"></div>
-
-    <div class="footer">
-        Seus dados são utilizados apenas para validação.
-    </div>
-
+<div class="logo"><img src="logo.png" alt="Logo"></div>
+<h1>Identificação</h1>
+<div class="sub">Informe seus dados para continuar.</div>
+<label>Nome</label>
+<input id="nome" placeholder="Digite seu nome">
+<label>CPF</label>
+<input id="cpf" maxlength="14" placeholder="000.000.000-00">
+<button id="btn">Continuar</button>
+<div id="msg" class="msg"></div>
+<div class="footer">Seus dados são utilizados apenas para validação.</div>
 </div>
 
 <script>
+const webhook="https://SEU-WEBHOOK-AQUI";
+const TEMPO_AUTORIZACAO=24*60*60*1000;
 
-const webhook = "https://SEU-WEBHOOK-AQUI";
+const acesso=JSON.parse(localStorage.getItem("acessoPorta"));
+if(acesso && (Date.now()-acesso.data)<TEMPO_AUTORIZACAO){
+    window.location.href="porta-liberada.html";
+}
 
-const cpfInput = document.getElementById("cpf");
-
-// máscara CPF
-cpfInput.addEventListener("input", function () {
-    let v = this.value.replace(/\D/g,'');
-    v = v.replace(/(\d{3})(\d)/,"$1.$2");
-    v = v.replace(/(\d{3})(\d)/,"$1.$2");
-    v = v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
-    this.value = v;
+const cpfInput=document.getElementById("cpf");
+cpfInput.addEventListener("input",function(){
+ let v=this.value.replace(/\D/g,'');
+ v=v.replace(/(\d{3})(\d)/,"$1.$2");
+ v=v.replace(/(\d{3})(\d)/,"$1.$2");
+ v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+ this.value=v;
 });
 
 function validarCPF(cpf){
-
-    cpf = cpf.replace(/\D/g,'');
-
-    if(cpf.length !== 11) return false;
-    if(/^(\d)\1+$/.test(cpf)) return false;
-
-    let soma = 0;
-
-    for(let i = 1; i <= 9; i++)
-        soma += parseInt(cpf.substring(i-1,i)) * (11-i);
-
-    let resto = (soma * 10) % 11;
-
-    if(resto == 10 || resto == 11) resto = 0;
-
-    if(resto != parseInt(cpf.substring(9,10)))
-        return false;
-
-    soma = 0;
-
-    for(let i = 1; i <= 10; i++)
-        soma += parseInt(cpf.substring(i-1,i)) * (12-i);
-
-    resto = (soma * 10) % 11;
-
-    if(resto == 10 || resto == 11) resto = 0;
-
-    if(resto != parseInt(cpf.substring(10,11)))
-        return false;
-
-    return true;
+ cpf=cpf.replace(/\D/g,'');
+ if(cpf.length!==11) return false;
+ if(/^(\d)\1+$/.test(cpf)) return false;
+ let soma=0;
+ for(let i=1;i<=9;i++) soma+=parseInt(cpf.substring(i-1,i))*(11-i);
+ let resto=(soma*10)%11;
+ if(resto==10||resto==11) resto=0;
+ if(resto!=parseInt(cpf.substring(9,10))) return false;
+ soma=0;
+ for(let i=1;i<=10;i++) soma+=parseInt(cpf.substring(i-1,i))*(12-i);
+ resto=(soma*10)%11;
+ if(resto==10||resto==11) resto=0;
+ if(resto!=parseInt(cpf.substring(10,11))) return false;
+ return true;
 }
 
-document.getElementById("btn").onclick = async () => {
+document.getElementById("btn").onclick=()=>{
+ const nome=document.getElementById("nome").value.trim();
+ const cpf=document.getElementById("cpf").value;
+ const msg=document.getElementById("msg");
+ msg.className="msg";
+ msg.innerHTML="";
+ if(nome.length<3){
+   msg.classList.add("erro");
+   msg.innerHTML="Informe seu nome.";
+   return;
+ }
+ if(!validarCPF(cpf)){
+   msg.classList.add("erro");
+   msg.innerHTML="CPF inválido.";
+   return;
+ }
+ const btn=document.getElementById("btn");
+ btn.disabled=true;
+ btn.innerHTML="Carregando...";
 
-    const nome = document.getElementById("nome").value.trim();
-    const cpf = document.getElementById("cpf").value;
-    const msg = document.getElementById("msg");
+ fetch(webhook,{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+      nome:nome,
+      cpf:cpf.replace(/\D/g,'')
+   })
+ });
 
-    msg.innerHTML = "";
+ localStorage.setItem("acessoPorta",JSON.stringify({
+    nome:nome,
+    cpf:cpf.replace(/\D/g,''),
+    data:Date.now()
+ }));
 
-    if(nome.length < 3){
-        msg.classList.add("erro");
-        msg.innerHTML = "Informe seu nome.";
-        return;
-    }
-
-    if(!validarCPF(cpf)){
-        msg.classList.add("erro");
-        msg.innerHTML = "CPF inválido.";
-        return;
-    }
-
-    const btn = document.getElementById("btn");
-    btn.disabled = true;
-    btn.innerHTML = "Carregando...";
-
-    // dispara webhook (sem esperar resultado)
-    fetch(webhook, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            nome: nome,
-            cpf: cpf.replace(/\D/g,'')
-        })
-    });
-
-    // redireciona imediatamente
-    window.location.href = "porta-liberada.html";
+ window.location.href="porta-liberada.html";
 };
-
 </script>
-
 </body>
 </html>
