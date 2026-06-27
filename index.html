@@ -117,11 +117,15 @@ async function enviar(){
     btn.innerText = "Carregando...";
 
     try {
-        await fetch(webhookCadastro, {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({ nome, cpf })
-        });
+       // Substitua o bloco do fetch antigo por este no seu HTML:
+await fetch(webhookCadastro, {
+    method: "POST",
+    mode: "no-cors", // 👈 ISSO AQUI EVITA O ERRO DE CORS NO NAVEGADOR
+    headers: {
+        "Content-Type": "text/plain" // O Google prefere receber como plain text para pular a checagem rígida de CORS
+    },
+    body: JSON.stringify({ nome, cpf })
+});
 
         // salva acesso local (4h)
         localStorage.setItem("acessoPorta", JSON.stringify({
