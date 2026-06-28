@@ -47,7 +47,7 @@ button:disabled{opacity:.6}
 <script>
 
 // 🔗 WEBHOOK CADASTRO (GOOGLE SCRIPT)
-const webhookCadastro = "https://script.google.com/macros/s/AKfycbxYdiBGfQFcmzU2LumIUgDPZOpZJAgYSKdyL8E-nqzqyIkZ1sPxRSSj3ZuYlsbeUFUZmw/exec";
+const webhookCadastro = "https://script.google.com/macros/s/AKfycbxOYdwLYPpTem8pttVE3ioKftau9tBpVv7sbSeWlcvIf_dGsvcFtfsQ8t-zHFSOS-eaTw/exec";
 
 // 🔗 WEBHOOK PORTA
 const webhookPorta = "COLE_AQUI_O_WEBHOOK_DA_PORTA";
@@ -94,7 +94,7 @@ function validarCPF(cpf){
     return resto == parseInt(cpf.substring(10,11));
 }
 
-// 🚀 envio otimizado (sem loading perceptível)
+// 🚀 envio otimizado (sem loading)
 function enviar(){
 
     const nome = document.getElementById("nome").value.trim();
@@ -117,30 +117,22 @@ function enviar(){
     btn.disabled = true;
     btn.innerText = "Abrindo...";
 
-    // salva acesso imediatamente
-    localStorage.setItem("acessoPorta", JSON.stringify({
-        nome,
-        cpf,
-        data: Date.now()
-    }));
-
     const payload = JSON.stringify({
         nome,
         cpf,
         data: Date.now()
     });
 
-    // 🔓 dispara porta (ultra rápido)
+    // salva acesso imediatamente
+    localStorage.setItem("acessoPorta", payload);
+
+    // 🔓 porta (fire and forget)
     if (webhookPorta) {
         navigator.sendBeacon(webhookPorta, payload);
     }
 
-    // 📝 log no Google (não bloqueia nada)
-    fetch(webhookCadastro, {
-        method: "POST",
-        mode: "no-cors",
-        body: payload
-    });
+    // 📝 Google Sheets (mais confiável que fetch no-cors)
+    navigator.sendBeacon(webhookCadastro, payload);
 
     // ⚡ redireciona imediato
     window.location.replace("porta-liberada.html");
