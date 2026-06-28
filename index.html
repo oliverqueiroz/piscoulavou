@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -46,11 +47,11 @@ button:disabled{opacity:.6}
 
 <script>
 
-// 🔗 WEBHOOK CADASTRO (SEU GOOGLE SCRIPT)
+// 🔗 WEBHOOK CADASTRO (GOOGLE SCRIPT)
 const webhookCadastro = "https://script.google.com/macros/s/AKfycbzQGzqY4Ni5TWd0sUmY3jb-hRH-zBDMkc-sSe1roP35F40_gJdW5R8-JBDLQANzBTM0kA/exec";
 
-// 🔗 WEBHOOK PORTA (AINDA NÃO USADO)
-const webhookPorta = null;
+// 🔗 WEBHOOK PORTA
+const webhookPorta = "COLE_AQUI_O_WEBHOOK_DA_PORTA";
 
 // ⏱ 4 horas de acesso
 const TEMPO = 4 * 60 * 60 * 1000;
@@ -117,28 +118,15 @@ async function enviar(){
     btn.innerText = "Carregando...";
 
     try {
-       // Substitua o bloco do fetch antigo por este no seu HTML:
-await fetch(webhookCadastro, {
-    method: "POST",
-    mode: "no-cors", // 👈 ISSO AQUI EVITA O ERRO DE CORS NO NAVEGADOR
-    headers: {
-        "Content-Type": "text/plain" // O Google prefere receber como plain text para pular a checagem rígida de CORS
-    },
-    body: JSON.stringify({ nome, cpf })
-});
 
-        // salva acesso local (4h)
-        localStorage.setItem("acessoPorta", JSON.stringify({
-            nome,
-            cpf,
-            data: Date.now()
-        }));
-
-        // opcional: webhook da porta (ainda desligado)
+        // 🔓 PRIORIDADE: abre a porta
         if (webhookPorta) {
             fetch(webhookPorta, {
                 method: "POST",
-                headers: {"Content-Type":"application/json"},
+                keepalive: true,
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                     nome,
                     cpf,
@@ -147,6 +135,24 @@ await fetch(webhookCadastro, {
                 })
             }).catch(()=>{});
         }
+
+        // 📝 Cadastro no Google (em segundo plano)
+        fetch(webhookCadastro, {
+            method: "POST",
+            mode: "no-cors",
+            keepalive: true,
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: JSON.stringify({ nome, cpf })
+        }).catch(()=>{});
+
+        // salva acesso local (4h)
+        localStorage.setItem("acessoPorta", JSON.stringify({
+            nome,
+            cpf,
+            data: Date.now()
+        }));
 
         window.location.href = "porta-liberada.html";
 
@@ -161,3 +167,4 @@ await fetch(webhookCadastro, {
 
 </body>
 </html>
+```
